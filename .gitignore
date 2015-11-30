@@ -1,0 +1,20 @@
+# .gitignore
+[Pp]lugins/android.json
+[Pp]lugins/windows.json
+[Pp]lugins/wp8.json
+[Pp]lugins/remote_ios.json
+[Pp]latforms/
+node_modules/
+platforms/
+plugins/ 
+.vs/**
+*bower_components*
+*node_modules*
+npm-debug.log
+*bld/
+*/changeList.json
+*/plugins/**
+*.user
+packages/*
+**/bin/
+**/obj/

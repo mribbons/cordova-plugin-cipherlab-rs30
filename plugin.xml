@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin 
+  id="cordova-plugin-cipherlab-rs30" 
+  version="0.0.3" 
+  xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <name>CipherlabRS30CordovaPlugin</name>
+  <js-module name="CipherlabRS30CordovaPlugin" src="www/CipherlabRS30CordovaPlugin.js">
+    <clobbers target="cordova.plugins.CipherlabRS30CordovaPlugin" />
+  </js-module><platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="CipherlabRS30CordovaPlugin">
+        <param name="android-package" value="au.com.micropacific.cordova.CipherlabRS30Plugin" />
+      </feature>
+    </config-file>
+    <config-file parent="/*" target="AndroidManifest.xml">
+      
+    </config-file>
+    <source-file src="src/android/au/com/micropacific/cordova/CipherlabRS30Plugin.java" target-dir="src/au/com/micropacific/cordova/CipherlabRS30CordovaPlugin" />
+    <source-file src="src/android/au/com/micropacific/cordova/DataReceiver.java" target-dir="src/au/com/micropacific/cordova/CipherlabRS30CordovaPlugin" />
+    <source-file src="src/android/BarcodeAPI.jar" target-dir="libs"/>
+  </platform>
+</plugin>
