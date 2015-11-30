@@ -19,7 +19,7 @@ cordova.plugins.CipherlabRS30CordovaPlugin.initialise()
 ```
 
 Subscribe to scans by providing a callback method:
-(This will receive scans triggered by hardware button or software triggered (below)
+(This will receive scans triggered by hardware button or software trigger (below)
 ```
 cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data) {
     append("scan received: " + data);
@@ -30,7 +30,7 @@ Request a scan on button click event:
 ```
 document.getElementById("scan_button").addEventListener('click', function () {
 	cordova.plugins.CipherlabRS30CordovaPlugin.requestScan(function () {
-		// MDR 30/11/2015 - This is just a placeholder callback. Results will be handled by setReceiveScanCallback() parameter below
+		// This callback doesn't need to do anything, the setReceiveScanCallback callback is what receives the scan data.
 	});
 });
 ```
