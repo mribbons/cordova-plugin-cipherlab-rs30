@@ -15,7 +15,7 @@ I apologise for not being able to provide device build numbers as I don't have d
 ## Installation
 
 ```
-cordova plugin add https://github.com/mribbons/cordova-plugin-cipherlab-rs30
+cordova plugin add cordova plugin add https://github.com/mribbons/cordova-plugin-cipherlab-rs30#BarcodeAPI_v1.0.31
 ```
 
 # Sample Code
