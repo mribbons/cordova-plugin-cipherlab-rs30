@@ -88,9 +88,8 @@ public class DataReceiver extends BroadcastReceiver {
 
             ReaderOutputConfiguration settings = new ReaderOutputConfiguration();
             mReaderManager.Get_ReaderOutputConfiguration(settings);
-            settings.enableKeyboardEmulation = Enable_State.FALSE;
-            mReaderManager.Set_ReaderOutputConfiguration(settings);
-			
+            settings.enableKeyboardEmulation = KeyboardEmulationType.None;
+            mReaderManager.Set_ReaderOutputConfiguration(settings);			
 			
 			Log.v("CipherlabRS30Plugin", "got data, 3");
 
