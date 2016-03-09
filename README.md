@@ -93,3 +93,9 @@ Full sample (eg index.js):
     };
 } )();
 ```
+
+## TODO
+
+Receive barcode types as part of ReceiveScanCallback
+
+Implement scanner configuration support (ReaderOutputConfiguration)
