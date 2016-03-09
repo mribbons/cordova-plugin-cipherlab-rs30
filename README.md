@@ -3,6 +3,7 @@ Apache Cordova Barcode Scanner Plugin for Cipherlab RS30
 
 ## Supported Platforms
 Cipherlab RS30 Scanner
+(BarcodeAPI_V1_0_35.jar)
 
 ## Installation
 
