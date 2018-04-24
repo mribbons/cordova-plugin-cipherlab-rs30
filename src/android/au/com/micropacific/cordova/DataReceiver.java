@@ -61,30 +61,23 @@ public class DataReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// If intent of the Intent_SOFTTRIGGER_DATA string is received
-		if (intent.getAction().equals(GeneralString.Intent_SOFTTRIGGER_DATA)) {
+		if (intent.getAction().equals(GeneralString.Intent_SOFTTRIGGER_DATA) || intent.getAction().equals(GeneralString.Intent_PASS_TO_APP)) {
 				
-			// fetch the data within the intent
+			byte [] binary = null;
+			
+			if (this.plugin.getEnableBinaryData())
+				binary = intent.getByteArrayExtra(GeneralString.BcReaderDataArray);
+
 			String data = intent.getStringExtra(GeneralString.BcReaderData);
+			int type = intent.getIntExtra(GeneralString.BcReaderCodeType, 0);
+
+			BcDecodeType barcodeType = BcDecodeType.valueOf(type);
+
+			Log.v("CipherlabRS30Plugin", "got data: " + data);
+			this.plugin.receieveScan(data, barcodeType.name().toUpperCase(), binary);
+		} else if(intent.getAction().equals(GeneralString.Intent_READERSERVICE_CONNECTED)){
 				
-			// display the fetched data
-			//e1.setText(data);
-			Log.v("CipherlabRS30Plugin", "got data, 1: " + data);
-			this.plugin.receieveScan(data);
-		}else if (intent.getAction().equals(GeneralString.Intent_PASS_TO_APP)){
-				
-			// fetch the data within the intent
-			String data = intent.getStringExtra(GeneralString.BcReaderData);
-				
-			// display the fetched data
-			//e1.setText(data);
-			Log.v("CipherlabRS30Plugin", "got data, 2: " + data);
-			this.plugin.receieveScan(data);
-				
-		}else if(intent.getAction().equals(GeneralString.Intent_READERSERVICE_CONNECTED)){
-				
-			BcReaderType myReaderType =  mReaderManager.GetReaderType();	
-			//e1.setText(myReaderType.toString());
+			BcReaderType myReaderType =  mReaderManager.GetReaderType();
 
             ReaderOutputConfiguration settings = new ReaderOutputConfiguration();
             mReaderManager.Get_ReaderOutputConfiguration(settings);

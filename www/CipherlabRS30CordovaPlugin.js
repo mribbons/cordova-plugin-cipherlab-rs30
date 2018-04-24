@@ -49,7 +49,17 @@ var CipherlabRS30CordovaPlugin = function (require, exports, module) {
 		this.requestScan = function(callback) {
 			cordova.exec(callback, function (err) {
 			}, "CipherlabRS30CordovaPlugin", "requestScan", []);
-		}
+        }
+        
+        this.setEnableBinaryData = function(enable, callback) {
+            cordova.exec(callback, function (err) {
+			}, "CipherlabRS30CordovaPlugin", "setEnableBinaryData", [enable]);
+        }
+
+        this.getEnableBinaryData = function(callback) {
+			cordova.exec(callback, function (err) {
+			}, "CipherlabRS30CordovaPlugin", "getEnableBinaryData", []);
+        }
     }
 
     module.exports = new EchoService();

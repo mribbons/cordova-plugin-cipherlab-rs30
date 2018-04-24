@@ -46,6 +46,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import java.io.*;
 
 /**
@@ -60,6 +63,7 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 	private com.cipherlab.barcode.ReaderManager mReaderManager;
 	private DataReceiver mDataReceiver;
 	private CallbackContext receiveScanCallback;
+	private boolean enableBinaryData = false;
 
 	public CipherlabRS30Plugin()
 	{
@@ -126,15 +130,45 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 		
 			return true;
 		}
+
+		if (action.equals("setEnableBinaryData"))
+		{
+			boolean enable = args.getBoolean(0);
+			Log.v("CipherlabRS30Plugin", " ==== setEnableBinaryData: " + enable + " ===");
+			this.setEnableBinaryData(callbackContext, enable);
+			return true;
+		}
+
+		if (action.equals("getEnableBinaryData"))
+		{
+			this.getEnableBinaryData(callbackContext);
+			return true;
+		}
 		
 		Log.v("CipherlabRS30Plugin", "============== done   ===========: " + action);
 
         return false;
     }
 	
-	public void receieveScan(String data)
+	public void receieveScan(String data, String type, byte [] binary)
 	{	
-		PluginResult progressResult = new PluginResult(PluginResult.Status.OK, data);
+		ArrayList<PluginResult> arguments = new ArrayList<PluginResult>();
+		arguments.add(new PluginResult(PluginResult.Status.OK, data));
+		arguments.add(new PluginResult(PluginResult.Status.OK, type));
+
+		if (this.getEnableBinaryData()) {
+			// MDR 24/04/2018 - byte array doesn't get passed through properly, convert to integer array
+			JSONArray integers = new JSONArray();
+
+			for (int x = 0; x < binary.length; x++) {
+				integers.put((int)binary[x]);
+			}
+
+			arguments.add(new PluginResult(PluginResult.Status.OK, integers));
+		}	
+
+		PluginResult progressResult = new PluginResult(PluginResult.Status.OK, arguments);
+
 		progressResult.setKeepCallback(true);
 	
 		if (receiveScanCallback == null)
@@ -191,5 +225,19 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 		Log.v("CipherlabRS30Plugin", "CipherlabRS30Plugin.initialise() Done");
 
 		callbackContext.success();
+	}
+
+	public void setEnableBinaryData(CallbackContext callbackContext, boolean enable) {
+		this.enableBinaryData = enable;
+		callbackContext.success();
+	}
+
+	private void getEnableBinaryData(CallbackContext callbackContext) {
+		Log.v("CipherlabRS30Plugin", "getEnableBinaryData: " + Boolean.toString(this.getEnableBinaryData()));
+		callbackContext.success(Boolean.toString(this.getEnableBinaryData()));
+	}
+
+	public boolean getEnableBinaryData() {
+		return this.enableBinaryData;
 	}
 }

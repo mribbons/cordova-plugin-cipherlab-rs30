@@ -56,7 +56,7 @@ Full sample (eg index.js):
         document.body.appendChild(node);
     }
 
-    function onDeviceReady() {
+    async function onDeviceReady() {
         // Handle the Cordova pause and resume events
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener('resume', onResume.bind(this), false);
@@ -68,14 +68,19 @@ Full sample (eg index.js):
         });
         
         // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
-        cordova.plugins.CipherlabRS30CordovaPlugin.initialise(function () {
+        await cordova.plugins.CipherlabRS30CordovaPlugin.initialise(async function () {
 
             append("init done");
             
-            cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data) {
-                append("scan received: " + data);
+            cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data, type) {
+                append("scan received: " + data + "(" + type + ")");
             });
 
+            // or alternatively, if your data contains binary data you can get an array of integers:
+            await cordova.plugins.CipherlabRS30CordovaPlugin.setEnableBinaryData(true);
+            cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data, type, binary) { 
+                // process binary array
+            }
         });
 
         window.onbeforeunload = function () {

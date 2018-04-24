@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-cipherlab-rs30",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Apache Cordova Barcode Scanner Plugin for Cipherlab RS30",
   "cordova": {
     "id": "cordova-plugin-cipherlab-rs30",
