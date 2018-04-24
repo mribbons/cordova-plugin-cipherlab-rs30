@@ -161,7 +161,7 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 			JSONArray integers = new JSONArray();
 
 			for (int x = 0; x < binary.length; x++) {
-				integers.put((int)binary[x]);
+				integers.put((int)binary[x] & 0xFF);
 			}
 
 			arguments.add(new PluginResult(PluginResult.Status.OK, integers));
