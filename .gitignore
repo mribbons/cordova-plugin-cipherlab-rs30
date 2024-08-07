@@ -6,7 +6,7 @@
 [Pp]latforms/
 node_modules/
 platforms/
-plugins/ 
+plugins/
 .vs/**
 *bower_components*
 *node_modules*
@@ -18,3 +18,5 @@ npm-debug.log
 packages/*
 **/bin/
 **/obj/
+.idea
+cordova-plugin-cipherlab-rs30.iml

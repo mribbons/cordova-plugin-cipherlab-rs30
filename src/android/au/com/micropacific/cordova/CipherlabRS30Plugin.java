@@ -58,8 +58,8 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 
 	// IntentFilter is used to get the intent we need.
 	private IntentFilter filter;
-	
-	// A very important class used to communicate with driver and  service. 
+
+	// A very important class used to communicate with driver and  service.
 	private com.cipherlab.barcode.ReaderManager mReaderManager;
 	private DataReceiver mDataReceiver;
 	private CallbackContext receiveScanCallback;
@@ -70,7 +70,7 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 	}
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException 
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException
 	{
 
         //System.out.println("============== execute ===========");
@@ -86,48 +86,80 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 			this.initialise(callbackContext);
 			return true;
 		}
-		
+
 		if (action.equals("setReceiveScanCallback")) {
 			Log.v("CipherlabRS30Plugin", " ==== setReceiveScanCallback ===");
 			receiveScanCallback = callbackContext;
-			
+
 			if (callbackContext == null)
 			{
 				Log.v("CipherlabRS30Plugin", "callbackContext is null.");
 			} else {
 				Log.v("CipherlabRS30Plugin", "callbackContext is not null");
 			}
-			
+
 			return true;
 		}
-		
+
 		if (action.equals("requestScan"))
 		{
 			//Log.v("CipherlabRS30Plugin", "requestScan");
-			
+
 			if (mReaderManager != null)
 			{
 				mReaderManager.SoftScanTrigger();
 			}
-		
+
 			return true;
 		}
-		
+
 		if (action.equals("destroy"))
 		{
-		
+
 			if (mReaderManager != null)
 			{
 				// Call this from window.onbeforeunload
 				Log.v("CipherlabRS30Plugin", "destroy(): cleaning up.");
-			
+
 				cordova.getActivity().unregisterReceiver(mDataReceiver);
 				mReaderManager.Release();
-			
+
 				mDataReceiver = null;
 				mReaderManager = null;
 			}
-		
+
+			return true;
+		}
+
+		if (action.equals("toggleScan")) {
+			if (mReaderManager != null) {
+				boolean bRet = mReaderManager.GetActive();
+				if (bRet) {
+					mReaderManager.SetActive(false);
+				} else {
+					mReaderManager.SetActive(true);
+				}
+				Log.v("CipherlabRS30Plugin", "toggleScan :" + !bRet);
+			}
+
+			return true;
+		}
+
+		if (action.equals("disableScan")) {
+			if (mReaderManager != null) {
+				mReaderManager.SetActive(false);
+				Log.v("CipherlabRS30Plugin", "disable scan");
+			}
+
+			return true;
+		}
+
+		if (action.equals("enableScan")) {
+			if (mReaderManager != null) {
+				mReaderManager.SetActive(true);
+				Log.v("CipherlabRS30Plugin", "enable scan");
+			}
+
 			return true;
 		}
 
@@ -144,14 +176,14 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 			this.getEnableBinaryData(callbackContext);
 			return true;
 		}
-		
+
 		Log.v("CipherlabRS30Plugin", "============== done   ===========: " + action);
 
         return false;
     }
-	
+
 	public void receieveScan(String data, String type, byte [] binary)
-	{	
+	{
 		ArrayList<PluginResult> arguments = new ArrayList<PluginResult>();
 		arguments.add(new PluginResult(PluginResult.Status.OK, data));
 		arguments.add(new PluginResult(PluginResult.Status.OK, type));
@@ -165,12 +197,12 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 			}
 
 			arguments.add(new PluginResult(PluginResult.Status.OK, integers));
-		}	
+		}
 
 		PluginResult progressResult = new PluginResult(PluginResult.Status.OK, arguments);
 
 		progressResult.setKeepCallback(true);
-	
+
 		if (receiveScanCallback == null)
 		{
 			Log.v("CipherlabRS30Plugin", "receiveScanCallback is null.");
@@ -200,11 +232,11 @@ public class CipherlabRS30Plugin extends CordovaPlugin {
 				Log.v("CipherlabRS30Plugin", "cordova.getActivity() is something");
 			}
 
-			filter = new IntentFilter(); 
+			filter = new IntentFilter();
 			filter.addAction(com.cipherlab.barcode.GeneralString.Intent_SOFTTRIGGER_DATA);
 			filter.addAction(com.cipherlab.barcode.GeneralString.Intent_PASS_TO_APP);
 			filter.addAction(com.cipherlab.barcode.GeneralString.Intent_READERSERVICE_CONNECTED);
-			
+
 			mReaderManager = ReaderManager.InitInstance(cordova.getActivity());
 			mDataReceiver = new DataReceiver(this, this.mReaderManager);
 			cordova.getActivity().registerReceiver(mDataReceiver, filter);
